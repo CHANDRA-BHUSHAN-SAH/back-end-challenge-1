@@ -11,19 +11,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Product extends MY_Controller {
 
+    private $es_type;
+    private $limit;
     public function __construct()
     {
         parent::__construct();
         
         $this->load->model('product_model');
         $this->load->helper('security');
+        $this->limit = REC_LIMIT;
         
-        // $this->config->load("elasticsearch");
-        // $config = [
-        //     'server' => $this->config->item('es_server'),
-        //     'index'  => $this->config->item('index'),
-        // ];
-        // $this->load->library('elasticsearch', $config);
+        if (ES_ENABLE) {
+            $config = [
+                'server' => ES_SERVER,
+                'index'  => ES_INDEX,
+            ];
+            $this->es_type = ES_TYPE;
+            $this->load->library('elasticsearch', $config);
+        }
     }
 
     /**
@@ -40,31 +45,41 @@ class Product extends MY_Controller {
             'message' => 'Product ID is required',
             'product' => (Object)[]
         ];
+
+        $product = NULL;
         $id = $this->get('id');
-        if ($id === NULL)
-        {
+        if ($id === NULL) {
             $this->response($response, parent::HTTP_NOT_FOUND);
         }
 
         // Validate the id.
-        if (! ctype_digit($id))
-        {
+        if (! ctype_digit($id)) {
             // Invalid id, set the response and exit.
             $response['message'] = 'Invalid id found';
             $this->response($response, parent::HTTP_BAD_REQUEST);
         }
 
-        $product = $this->product_model->get_product($id);
-        if (!empty($product))
-        {
+        if (ES_ENABLE) {
+            $sresult = $this->elasticsearch->get($this->es_type, $id);
+            if (empty($sresult) || isset($sresult['error']) || ! $sresult['found']) {
+                $product = $this->product_model->get_product($id);
+                if (! empty($product)) {
+                    $this->elasticsearch->add($this->es_type, $id, $product);
+                }
+            } else {
+                $product = $sresult['_source'];
+            }
+        } else {
+            $product = $this->product_model->get_product($id);
+        }
+
+        if (!empty($product)) {
             $response['status'] = TRUE;
             $response['message'] = 'success';
             $response['product'] = $product;
             // $this->output->cache(300);
             $this->set_response($response, parent::HTTP_OK);
-        }
-        else
-        {
+        } else {
             $response['message'] = 'No products were found!';
             $this->set_response($response, parent::HTTP_NOT_FOUND);
         }
@@ -98,7 +113,12 @@ class Product extends MY_Controller {
         }
 
         $id = $this->product_model->insert($product);
-
+        if ($id > 0 && ES_ENABLE) {
+            $product = $this->product_model->get_product($id);
+            if (! empty($product)) {
+                $this->elasticsearch->add($this->es_type, $id, $product);
+            }
+        }
         $response = [
             'status'    => (!empty($id) && $id > 0),
             'message'   => (!empty($id) && $id > 0) ? 'Created Successfully' : 'DB Error! Please retry later',
@@ -147,7 +167,11 @@ class Product extends MY_Controller {
         }
 
         $n = $this->product_model->update($product, $id);
-
+        if ($n && ES_ENABLE) {
+            $product = $this->product_model->get_product($id);
+            $this->elasticsearch->add($this->es_type, $id, [$product]);
+        }
+        
         $response = [
             'status'  => $n,
             'message' => $n ? 'Updated Successfully' : 'Product not found!',
@@ -169,8 +193,7 @@ class Product extends MY_Controller {
         $id = $this->get('id');
 
         // Validate the id.
-        if (! ctype_digit($id))
-        {
+        if (! ctype_digit($id)) {
             // Invalid id, set the response and exit.
             $response = [
                 'status' => FALSE,
@@ -181,7 +204,12 @@ class Product extends MY_Controller {
         }
 
         $n = $this->product_model->delete($id);
-        
+        if ($n && ES_ENABLE) {
+            $sresult = $this->elasticsearch->get($this->es_type, $id);
+            if (isset($sresult['found']) && $sresult['found']) {
+                $this->elasticsearch->delete($this->es_type, $id);
+            }
+        }
         $response = [
             'status'  => $n,
             'message' => $n ? 'Deleted Successfully!' : 'Product not found!',
@@ -209,40 +237,46 @@ class Product extends MY_Controller {
         
         $keyword = $this->get('keyword');
         $page = (int) $this->get('page');
-
-        $srch = ['/(-|\s)+/', '/[^a-zA-Z0-9\-\s]+/'];
-        $rplc = ['%', ''];
-        $keyword = preg_replace($srch, $rplc, $keyword);
         $page = $page <= 0 ? 1 : $page;
+        $offset = ($page - 1) * $this->limit;
+        $products = [];
 
-        if (empty($keyword))
-        {
-            $products = $this->product_model->get_products($page);
-            if ($products)
-            {
+        if (empty(trim($keyword))) {
+            $products = $this->product_model->get_products($offset, $this->limit);
+            if ($products) {
                 $response['status'] = TRUE;
                 $response['message'] = 'success';
                 $response['products'] = $products;
                 // $this->output->cache(300);
                 $this->response($response, parent::HTTP_OK);
-            }
-            else
-            {
+            } else {
                 $this->response($response, parent::HTTP_NOT_FOUND);
             }
         }
 
-        $products = $this->product_model->search_products($keyword, $page);
-        if (! empty($products))
-        {
+        if (ES_ENABLE) {
+            $sresult = $this->elasticsearch->query_wresultSize($this->es_type, $keyword, $this->limit, $offset);
+            if (empty($sresult) || isset($sresult['error']) || ! $sresult["hits"]["total"]) {    
+                $srch = ['/(-|\s)+/', '/[^a-zA-Z0-9\-\s]+/'];
+                $rplc = ['%', ''];
+                $keyword = preg_replace($srch, $rplc, $keyword);
+                $products = $this->product_model->search_products($keyword, $offset, $this->limit);
+            } else {
+                $products = array_map(function($item){
+                    return $item['_source'];
+                }, $sresult['hits']['hits']);
+            }
+        } else {
+            $products = $this->product_model->search_products($keyword, $offset, $this->limit);
+        }
+
+        if (! empty($products)) {
             $response['status'] = TRUE;
             $response['message'] = 'success';
             $response['products'] = $products;
             // $this->output->cache(300);
             $this->set_response($response, parent::HTTP_OK);
-        }
-        else
-        {
+        } else {
             $response['message'] = 'No products were found!';
             $this->set_response($response, parent::HTTP_NOT_FOUND);
         }

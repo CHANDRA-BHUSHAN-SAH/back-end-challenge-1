@@ -20,9 +20,8 @@ class Product_model extends CI_Model {
         }
     }
 
-    public function get_products($page = 1, $limit = 10)
+    public function get_products($offset = 0, $limit = 10)
     {
-        $offset = ($page - 1) * $limit;
         return $this->db
             ->select('p.id AS id, p.name AS name, available_size, price, image_url AS image, c.name as category')
             ->limit($limit, $offset)
@@ -63,9 +62,8 @@ class Product_model extends CI_Model {
         return $this->db->affected_rows() > 0;
     }
 
-    public function search_products($keyword, $page = 1, $limit = 10)
+    public function search_products($keyword, $offset = 0, $limit = 10)
     {
-        $offset = ($page - 1) * $limit;
         return $this->db
             ->select('p.id AS id, p.name AS name, available_size, price, image_url AS image, c.name as category')
             ->limit($limit, $offset)

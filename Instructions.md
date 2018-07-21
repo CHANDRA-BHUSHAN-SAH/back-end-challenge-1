@@ -22,7 +22,14 @@ Following are the steps:
     - Database username "DB_USERNAME". Ex. 'root'
     - Database password "DB_PASSWORD". Ex. 'pass'
     - To enable database result caching, set "DB_CACHE_ON" to 'TRUE' otherwise 'FALSE'
+- Set the Elastic Search (ES) informations as:
+    - Enable ES "ES_ENABLE". Ex. TRUE, if you wish to enable elastic search otherwise FALSE.
+    - Set the ES server complete url "ES_SERVER". Ex. 'http://localhost:9200'
+    - Set the ES root index "ES_INDEX". Ex. 'cb'
+    - Set the ES object name "ES_TYPE". EX. 'products'
 - Execute the query of file name "ModeStreetChallange.sql" for the specified database.
+
+__ * To enable elastic search, the machine should have installed elastic search server __
 
 All Done! :)
 

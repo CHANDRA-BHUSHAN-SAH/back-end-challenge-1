@@ -16,7 +16,7 @@ class Elasticsearch
         if (empty($params)) {
             $params = [
                 'server' => 'http://localhost:9200',
-                'index' => '',
+                'index' => 'cb',
             ];
         }
         $this->server = $params['server'];
@@ -164,12 +164,13 @@ class Elasticsearch
      * @param string  $type  what kind of type of index you want to search
      * @param string  $query the query as a string
      * @param integer $size  The size of the results
+     * @param integer $from  The offset of the results
      * 
      * @return array
      */
-    public function query_wresultSize($type, $query, $size = 999)
+    public function query_wresultSize($type, $query, $size = 999, $from = 0)
     {
-        return $this -> call($type . '/_search?' . http_build_query(array('q' => $q, 'size' => $size)));
+        return $this -> call($type . '/_search?' . http_build_query(array('q' => $query, 'size' => $size, 'from' => $from)));
     }
     /**
      * get one index via the id
@@ -221,12 +222,13 @@ class Elasticsearch
      * 
      * @param type $query
      * @param type $size
+     * @param type $from
      * 
      * @return type
      */
-    public function query_all_wresultSize($query, $size = 999)
+    public function query_all_wresultSize($query, $size = 999, $from = 0)
     {
-        return $this -> call('_search?' . http_build_query(array('q' => $query, 'size' => $size)));
+        return $this -> call('_search?' . http_build_query(array('q' => $query, 'size' => $size, 'from' => $from)));
     }
     /**
      * make a suggest query based on similar looking terms
