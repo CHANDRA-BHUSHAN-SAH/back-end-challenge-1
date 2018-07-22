@@ -31,8 +31,6 @@ class Product_model extends CI_Model {
             ->result();
     }
 
-    
-
     public function get_product($id)
     {
         return $this->db

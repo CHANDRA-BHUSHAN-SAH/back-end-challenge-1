@@ -1,7 +1,6 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 /**
  * This is the implementation of the product details save / edit information
  *
@@ -101,6 +100,7 @@ class Product extends MY_Controller {
      */
     public function  add_post()
     {
+        var_dump($this->post());
         $product = $this->_validate($this->post(), $err, TRUE);
         if (empty($product)) {
             // Invalid data, set the response and exit.
@@ -343,6 +343,11 @@ class Product extends MY_Controller {
                 'field_name'    => 'active_status',
             ],
         ];
+
+        if (empty($data)) {
+            $err = 'Unable to capture data!';
+            return FALSE;
+        }
 
         $key_fields     = array_keys($field_v);
         $data_fields    = array_keys($data);

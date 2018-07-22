@@ -15,7 +15,7 @@ define("DB_CACHE_ON", TRUE);         // enable database caching
 define("REC_LIMIT", 10);
 
 // -------------- Elastic Search configuration starts here -------------
-define("ES_ENABLE", TRUE);                    // enable elastic search
+define("ES_ENABLE", FALSE);                    // enable elastic search
 define("ES_SERVER", "http://localhost:9200"); // elastic search server host name with port number
 define("ES_INDEX",  "cb");                    // Root Index of elastic search engine
 define("ES_TYPE",   "products");              // Object type name

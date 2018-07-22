@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="CodeIgniter Application Test Suite" tests="24" assertions="37" errors="0" failures="0" skipped="0" time="2.519236">
+    <testsuite name="Product_test" file="F:\testprojects\modestreet\application\controllers\Product_test.php" tests="11" assertions="11" errors="0" failures="0" skipped="0" time="1.545530">
+      <testsuite name="Product_test::testRestFetchRequest" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.252154">
+        <testcase name="testRestFetchRequest with data set #0" class="Product_test" classname="Product_test" file="F:\testprojects\modestreet\application\controllers\Product_test.php" line="27" assertions="1" time="0.150014"/>
+        <testcase name="testRestFetchRequest with data set #1" class="Product_test" classname="Product_test" file="F:\testprojects\modestreet\application\controllers\Product_test.php" line="27" assertions="1" time="0.102140"/>
+      </testsuite>
+      <testcase name="testAddProduct" class="Product_test" classname="Product_test" file="F:\testprojects\modestreet\application\controllers\Product_test.php" line="37" assertions="1" time="0.286828"/>
+      <testsuite name="Product_test::testProductUpdate" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.242101">
+        <testcase name="testProductUpdate with data set #0" class="Product_test" classname="Product_test" file="F:\testprojects\modestreet\application\controllers\Product_test.php" line="62" assertions="1" time="0.090197"/>
+        <testcase name="testProductUpdate with data set #1" class="Product_test" classname="Product_test" file="F:\testprojects\modestreet\application\controllers\Product_test.php" line="62" assertions="1" time="0.151904"/>
+      </testsuite>
+      <testsuite name="Product_test::testProductDelete" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.284598">
+        <testcase name="testProductDelete with data set #0" class="Product_test" classname="Product_test" file="F:\testprojects\modestreet\application\controllers\Product_test.php" line="83" assertions="1" time="0.091445"/>
+        <testcase name="testProductDelete with data set #1" class="Product_test" classname="Product_test" file="F:\testprojects\modestreet\application\controllers\Product_test.php" line="83" assertions="1" time="0.193153"/>
+      </testsuite>
+      <testsuite name="Product_test::testProductSearch" tests="4" assertions="4" errors="0" failures="0" skipped="0" time="0.479849">
+        <testcase name="testProductSearch with data set #0" class="Product_test" classname="Product_test" file="F:\testprojects\modestreet\application\controllers\Product_test.php" line="107" assertions="1" time="0.128425"/>
+        <testcase name="testProductSearch with data set #1" class="Product_test" classname="Product_test" file="F:\testprojects\modestreet\application\controllers\Product_test.php" line="107" assertions="1" time="0.117975"/>
+        <testcase name="testProductSearch with data set #2" class="Product_test" classname="Product_test" file="F:\testprojects\modestreet\application\controllers\Product_test.php" line="107" assertions="1" time="0.123281"/>
+        <testcase name="testProductSearch with data set #3" class="Product_test" classname="Product_test" file="F:\testprojects\modestreet\application\controllers\Product_test.php" line="107" assertions="1" time="0.110168"/>
+      </testsuite>
+    </testsuite>
+    <testsuite name="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" tests="13" assertions="26" errors="0" failures="0" skipped="0" time="0.973706">
+      <testsuite name="Product_model_test::testGetProduct" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.175734">
+        <testcase name="testGetProduct with data set #0" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="28" assertions="1" time="0.067632"/>
+        <testcase name="testGetProduct with data set #1" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="28" assertions="1" time="0.108102"/>
+      </testsuite>
+      <testsuite name="Product_model_test::testGetProducts" tests="2" assertions="6" errors="0" failures="0" skipped="0" time="0.149944">
+        <testcase name="testGetProducts with data set #0" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="43" assertions="3" time="0.083062"/>
+        <testcase name="testGetProducts with data set #1" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="43" assertions="3" time="0.066882"/>
+      </testsuite>
+      <testsuite name="Product_model_test::testSearchProducts" tests="4" assertions="12" errors="0" failures="0" skipped="0" time="0.268457">
+        <testcase name="testSearchProducts with data set #0" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="63" assertions="3" time="0.075005"/>
+        <testcase name="testSearchProducts with data set #1" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="63" assertions="3" time="0.070760"/>
+        <testcase name="testSearchProducts with data set #2" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="63" assertions="3" time="0.069003"/>
+        <testcase name="testSearchProducts with data set #3" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="63" assertions="3" time="0.053689"/>
+      </testsuite>
+      <testsuite name="Product_model_test::testInsertProduct" tests="1" assertions="2" errors="0" failures="0" skipped="0" time="0.159217">
+        <testcase name="testInsertProduct with data set &quot;products&quot;" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="76" assertions="2" time="0.159217"/>
+      </testsuite>
+      <testsuite name="Product_model_test::testUpdateProduct" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.111320">
+        <testcase name="testUpdateProduct with data set #0" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="94" assertions="1" time="0.031821"/>
+        <testcase name="testUpdateProduct with data set #1" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="94" assertions="1" time="0.079499"/>
+      </testsuite>
+      <testsuite name="Product_model_test::testDeleteProduct" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.109034">
+        <testcase name="testDeleteProduct with data set #0" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="109" assertions="1" time="0.038621"/>
+        <testcase name="testDeleteProduct with data set #1" class="Product_model_test" classname="Product_model_test" file="F:\testprojects\modestreet\application\models\Product_model_test.php" line="109" assertions="1" time="0.070413"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
